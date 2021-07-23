@@ -38,6 +38,8 @@ if(UNIX AND NOT APPLE)
   endif()
 endif()
 
+target_link_libraries(memory_tools PUBLIC -latomic)
+
 target_compile_definitions(memory_tools
   PRIVATE "OSRF_TESTING_TOOLS_CPP_MEMORY_TOOLS_BUILDING_DLL")
 

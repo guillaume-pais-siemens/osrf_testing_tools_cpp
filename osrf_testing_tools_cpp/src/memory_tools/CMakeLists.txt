@@ -38,7 +38,18 @@ if(UNIX AND NOT APPLE)
   endif()
 endif()
 
-target_link_libraries(memory_tools PUBLIC -latomic)
+if (CMAKE_GENERATOR_PLATFORM)
+  set (TARGET_ARCH "${CMAKE_GENERATOR_PLATFORM}")
+else ()
+  set (TARGET_ARCH "${CMAKE_SYSTEM_PROCESSOR}")
+endif ()
+
+if (CMAKE_COMPILER_IS_GNUCXX AND TARGET_ARCH MATCHES "^(riscv|RISCV)64$")
+  # using GCC, libatomic is not automatically linked for RISC-V
+  target_link_libraries(memory_tools PUBLIC -latomic)
+endif ()
+
+
 
 target_compile_definitions(memory_tools
   PRIVATE "OSRF_TESTING_TOOLS_CPP_MEMORY_TOOLS_BUILDING_DLL")
